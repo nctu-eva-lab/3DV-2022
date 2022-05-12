@@ -68,7 +68,7 @@ In this subsection, we will define binary cross entropy loss that can help us **
 
 In this subsection, we will define chamfer loss that can help us **fit a 3D point cloud**. Define the loss functions here in `src/losses.py` file. We encourage you to write your own code for this and not use any pytorch3d[^2] utilities, but you can still use it if you have no idea how to do it.
 
-[^2]: [PyTor3D API](https://pytorch3d.readthedocs.io/en/latest/)
+[^2]: [PyTor3D repo](https://github.com/facebookresearch/pytorch3d/tree/main/pytorch3d)
 
 ## Reconstructing 3D from single view
 
@@ -102,8 +102,16 @@ Feel free to file an issue if you think this template has a major flaw.
 
 [Issues](https://github.com/nctu-eva-lab/3DV-2022/issues)
 
+## Discussions with others
+
+Feel free to start discussions with your classmates about how you can implement your work better!
+
+[Discussions](https://github.com/nctu-eva-lab/3DV-2022/discussions/categories/general)
+
 ## Other reference
 
 1. [PyTorch API](https://pytorch.org/docs/stable/index.html)
-1. [PyTorch3d repo](https://github.com/facebookresearch/pytorch3d)
-2. [Trimesh API](https://trimsh.org/trimesh.html)
+2. [PyTorch3d API](https://pytorch3d.readthedocs.io/en/latest/)
+3. [Trimesh API](https://trimsh.org/trimesh.html)
+
+※ Noted: The API docs might still not be complete, it's essential to trace the source code in their own project github repo.
