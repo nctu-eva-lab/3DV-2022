@@ -1,0 +1,30 @@
+# input data
+type: "point" # "point" "voxel"
+n_points: 2048
+
+# vision model
+arch: "resnet18"
+
+# training
+lr: 0.0004 
+max_iter: 10000
+
+# losses
+w_chanfer: 1.0
+w_smooth: 0.1
+
+# dataloader
+batch_szie: 2
+num_workers: 0
+
+# logger
+log_freq: 1000
+
+# checkpoint
+save_freq: 10000
+load_checkpoint: False
+
+# eval
+vis_freq: 1000
+load_eval_checkpoint: True
+
