@@ -104,7 +104,7 @@ Feel free to file an issue if you think this template has a major flaw.
 
 ## Discussions with others
 
-Feel free to start discussions with your classmates about how you can implement your work better!
+Feel free to start discussion with your classmates about how you can implement your work better!
 
 [Discussions](https://github.com/nctu-eva-lab/3DV-2022/discussions/categories/general)
 
