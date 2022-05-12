@@ -14,8 +14,7 @@ This repo just serve as a template, feel free to adjust most of the code if need
 │   └── chair_img_pc_voxel_mesh.zip
 ├── notebooks    # Where your .ipynb files placed.
 │   ├── scene.py
-│   ├── synth.ipynb    # Synthesize datas from ShapeNet mesh.
-│   └── test.ipynb
+│   └── synth.ipynb    # Synthesize datas from ShapeNet mesh.
 ├── src    # Where your modules placed.
 │   ├── dataset.py    # Define your custom PyTorch dataset.
 │   ├── losses.py    # Define your custom loss functions.
