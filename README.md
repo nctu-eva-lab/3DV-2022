@@ -94,7 +94,7 @@ After trained, visualize the input RGB, ground truth point cloud and predicted p
 
 ## Analyse effects of hyperparms variations
 
-Analyse the results, by varying an hyperparameter of your choice. For example `n_points` or `w_chamfer` or `vision model` or `lr` etc. Try to be unique and conclusive in your analysis.
+Analyse the results, by varying an hyperparameter of your choice. For example `n_points` or `vision model` or `lr` etc. Try to be unique and conclusive in your analysis.
 
 ## Issues for this template
 
@@ -115,6 +115,3 @@ Feel free to start discussion with your classmates about how you can implement y
 3. [Trimesh API](https://trimsh.org/trimesh.html)
 
 ※ Noted: The API docs might still not be complete, it's essential to trace the source code in their own project github repo.
-
-test
-

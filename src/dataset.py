@@ -1,8 +1,9 @@
 import torch
 from torch.utils.data import Dataset
 from torchvision import datasets
-from torchvision.transforms import ToTensor
+from torchvision import transforms
 from torchvision.io import read_image
+from PIL import Image
 
 import os
 import glob
@@ -13,11 +14,12 @@ from pytorch3d.io import load_obj
 from pytorch3d.renderer import TexturesVertex
 
 class ShapeNetDB(Dataset):
-    def __init__(self, data_dir, data_type):
+    def __init__(self, data_dir, data_type, img_transform=False):
         super(ShapeNetDB).__init__()
         self.data_dir = data_dir
         self.data_type = data_type
         self.db = self.load_db()
+        self.img_transform = img_transform
 
         self.get_index()
 
@@ -29,12 +31,12 @@ class ShapeNetDB(Dataset):
         if self.data_type == 'point':
             """
             Return shapes:
-            img: (B, 3, 256, 256)
+            img: (B, 256, 256, 3)
             pc: (B, 2048, 3)
             object_id: (B,)
             """
             img, img_id = self.load_img(idx)
-            pc, object_id = self.load_pc(idx)
+            pc, object_id = self.load_point(idx)
 
             assert img_id == object_id
 
@@ -43,7 +45,7 @@ class ShapeNetDB(Dataset):
         elif self.data_type == 'voxel':
             """
             Return shapes:
-            img: (B, 3, 256, 256)
+            img: (B, 256, 256, 3)
             voxel: (B, 33, 33, 33)
             object_id: (B,)
             """
@@ -63,20 +65,30 @@ class ShapeNetDB(Dataset):
         #     return img, mesh, object_id
 
     def load_db(self):
-        print(os.path.join(self.data_dir, '*'))
+        # print(os.path.join(self.data_dir, '*'))
         db_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
         # print(db_list)
 
         return db_list
     
     def get_index(self):
-        
-        self.id_index = self.data_dir.split('/').index("chair") + 1
-        print(self.id_index)
+        self.id_index = self.data_dir.split('/').index("data") + 2
+        # print(self.id_index)
 
     def load_img(self, idx):
         path = os.path.join(self.db[idx], 'view.png')
         img = read_image(path) / 255.0
+        img = img.permute(1,2,0)
+        # raw_img = Image.open(path)
+        # img = torch.from_numpy(np.array(raw_img) / 255.0)[..., :3]
+        # img = img.to(dtype=torch.float32)
+
+        # if self.img_transform:
+        #     trans = transforms.Compose([
+        #                                 transforms.Resize(512),
+        #                                 transforms.ToTensor()
+        #                                 ])
+        #     img = trans(img)
 
         object_id = self.db[idx].split('/')[self.id_index]
 
@@ -141,9 +153,8 @@ if __name__ == '__main__':
     db = ShapeNetDB('/home/odie/3dv-hw/data/chair', 'point')
     dataloader = DataLoader(db, batch_size=10, shuffle=True)
 
-    for img, voxel, object_id in dataloader:
-        # print(input_dict["img"][0])
+    for img, point, object_id in dataloader:
         print(img.shape)
-        print(voxel.shape)   
+        print(point.shape)   
         print(object_id)
         break

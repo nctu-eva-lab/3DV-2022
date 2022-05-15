@@ -3,17 +3,21 @@ import torch
 from src.dataset import ShapeNetDB
 from src.model import SingleViewto3D
 import src.losses as losses
+from src.losses import ChamferDistanceLoss
+import numpy as np
 
 import hydra
 from omegaconf import DictConfig
 
 
+cd_loss = ChamferDistanceLoss()
+
 def calculate_loss(predictions, ground_truth, cfg):
-    if cfg.type == 'voxel':
+    if cfg.dtype == 'voxel':
         loss = losses.voxel_loss(predictions,ground_truth)
-    elif cfg.type == 'point':
-        loss = losses.chamfer_loss(predictions, ground_truth)
-    # elif cfg.type == 'mesh':
+    elif cfg.dtype == 'point':
+        loss = cd_loss(predictions, ground_truth)
+    # elif cfg.dtype == 'mesh':
     #     sample_trg = sample_points_from_meshes(ground_truth, cfg.n_points)
     #     sample_pred = sample_points_from_meshes(predictions, cfg.n_points)
 
@@ -23,9 +27,9 @@ def calculate_loss(predictions, ground_truth, cfg):
         # loss = cfg.w_chamfer * loss_reg + cfg.w_smooth * loss_smooth        
     return loss
 
-@hydra.main(config_path="configs/", config_name="config")
+@hydra.main(config_path="configs/", config_name="config.yml")
 def evaluate_model(cfg: DictConfig):
-    shapenetdb = ShapeNetDB('./data/chair', 'point')
+    shapenetdb = ShapeNetDB(cfg.data_dir, cfg.dtype)
 
     loader = torch.utils.data.DataLoader(
         shapenetdb,
@@ -45,12 +49,13 @@ def evaluate_model(cfg: DictConfig):
     avg_loss = []
 
     if cfg.load_eval_checkpoint:
-        checkpoint = torch.load(f'checkpoint_{cfg.type}.pth')
+        checkpoint = torch.load(f'{cfg.base_dir}/checkpoint_{cfg.dtype}.pth')
         model.load_state_dict(checkpoint['model_state_dict'])
         print(f"Succesfully loaded iter {start_iter}")
     
     print("Starting evaluating !")
-    for step in range(start_iter, cfg.max_iter):
+    max_iter = len(eval_loader)
+    for step in range(start_iter, max_iter):
         iter_start_time = time.time()
 
         read_start_time = time.time()
@@ -61,6 +66,7 @@ def evaluate_model(cfg: DictConfig):
         read_time = time.time() - read_start_time
 
         prediction_3d = model(images_gt, cfg)
+        torch.save(prediction_3d.detach().cpu(), f'{cfg.base_dir}/pre_point_cloud.pt')
 
         loss = calculate_loss(prediction_3d, ground_truth_3d, cfg).cpu().item()
 
@@ -68,7 +74,7 @@ def evaluate_model(cfg: DictConfig):
         # if (step % cfg.vis_freq) == 0:
         #     # visualization block
         #     #  rend = 
-        #     plt.imsave(f'vis/{step}_{args.type}.png', rend)
+        #     plt.imsave(f'vis/{step}_{args.dtype}.png', rend)
 
         total_time = time.time() - start_time
         iter_time = time.time() - iter_start_time

@@ -1,2 +1,6 @@
 __pycache__
-data
+data*
+outputs
+*.pth
+*.pt
+visual.ipynb

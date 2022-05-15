@@ -3,17 +3,19 @@ import torch
 from src.dataset import ShapeNetDB
 from src.model import SingleViewto3D
 import src.losses as losses
+from src.losses import ChamferDistanceLoss
 
 import hydra
 from omegaconf import DictConfig
 
+cd_loss = ChamferDistanceLoss()
 
 def calculate_loss(predictions, ground_truth, cfg):
-    if cfg.type == 'voxel':
+    if cfg.dtype == 'voxel':
         loss = losses.voxel_loss(predictions,ground_truth)
-    elif cfg.type == 'point':
-        loss = losses.chamfer_loss(predictions, ground_truth)
-    # elif cfg.type == 'mesh':
+    elif cfg.dtype == 'point':
+        loss = cd_loss(predictions, ground_truth)
+    # elif cfg.dtype == 'mesh':
     #     sample_trg = sample_points_from_meshes(ground_truth, cfg.n_points)
     #     sample_pred = sample_points_from_meshes(predictions, cfg.n_points)
 
@@ -23,9 +25,10 @@ def calculate_loss(predictions, ground_truth, cfg):
         # loss = cfg.w_chamfer * loss_reg + cfg.w_smooth * loss_smooth        
     return loss
 
-@hydra.main(config_path="configs/", config_name="config")
+@hydra.main(config_path="configs/", config_name="config.yml")
 def train_model(cfg: DictConfig):
-    shapenetdb = ShapeNetDB('./data/chair', 'point')
+    print(cfg.data_dir)
+    shapenetdb = ShapeNetDB(cfg.data_dir, cfg.dtype)
 
     loader = torch.utils.data.DataLoader(
         shapenetdb,
@@ -45,7 +48,7 @@ def train_model(cfg: DictConfig):
     start_time = time.time()
 
     if cfg.load_checkpoint:
-        checkpoint = torch.load(f'checkpoint_{cfg.type}.pth')
+        checkpoint = torch.load(f'{cfg.base_dir}/checkpoint_{cfg.dtype}.pth')
         model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         start_iter = checkpoint['step']
@@ -83,9 +86,9 @@ def train_model(cfg: DictConfig):
                 'step': step,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict()
-                }, f'checkpoint_{cfg.type}.pth')
+                }, f'{cfg.base_dir}/checkpoint_{cfg.dtype}.pth')
 
-        print("[%4d/%4d]; ttime: %.0f (%.2f, %.2f); loss: %.3f" % (step, cfg.max_iter, total_time, read_time, iter_time, loss_vis))
+        print("[%4d/%4d]; ttime: %.0f (%.2f, %.2f); loss: %.5f" % (step, cfg.max_iter, total_time, read_time, iter_time, loss_vis))
 
     print('Done!')
 
