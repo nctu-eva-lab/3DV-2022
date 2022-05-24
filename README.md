@@ -20,7 +20,7 @@ This repo just serve as a template, feel free to adjust most of the code if need
 │   ├── losses.py    # Define your custom loss functions.
 │   └── model.py    # Define your model structure.
 ├── README.md
-├── requirements.txt    # Create your conda env with this file.
+├── requirements.yml    # Create your conda env with this file.
 ├── eval.py    # Evaluate your model.
 └── train.py    # Train your model.
 ```
@@ -38,7 +38,7 @@ Or `git clone git@github.com:nctu-eva-lab/3DV-2022.git` to only have a local cop
 Create a conda env:
 
 ```bash
-conda create --name py3d --file requirements.txt
+conda env create --file requirements.yml
 ```
 
 ### Download dataset
