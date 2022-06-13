@@ -78,9 +78,9 @@ This section will involve training a single view to 3D pipeline for voxels, poin
 
 In this subsection, we will define a neural network to decode binary voxel grids. Define the decoder network in `src/model.py` file.
 
-Run the file `python train.py type='voxel'`, to train single view to voxel grid pipeline, feel free to tune the hyperparameters as per your need.
+Run the file `python train.py dtype='voxel'`, to train single view to voxel grid pipeline, feel free to tune the hyperparameters as per your need.
 
-After trained, visualize the input RGB, ground truth voxel grid and predicted voxel in `eval.py` file using: `python eval.py type='voxel'`.
+After trained, visualize the input RGB, ground truth voxel grid and predicted voxel in `eval.py` file using: `python eval.py dtype='voxel'`.
 
 You need to add the respective visualization code in `eval.py` to show both the predicted voxel and the mesh side by side.
 
@@ -88,9 +88,9 @@ You need to add the respective visualization code in `eval.py` to show both the 
 
 In this subsection, we will define a neural network to decode point clouds. Similar as above, define the decoder network in `src/model.py` file.
 
-Run the file `python train.py type='point'`, to train single view to pointcloud pipeline, feel free to tune the hyperparameters as per your need.
+Run the file `python train.py dtype='point'`, to train single view to pointcloud pipeline, feel free to tune the hyperparameters as per your need.
 
-After trained, visualize the input RGB, ground truth point cloud and predicted point cloud in `eval.py` file using: `python eval.py type='point'`.
+After trained, visualize the input RGB, ground truth point cloud and predicted point cloud in `eval.py` file using: `python eval.py dtype='point'`.
 
 ## Analyse effects of hyperparms variations
 
