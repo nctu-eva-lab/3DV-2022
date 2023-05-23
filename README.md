@@ -1,4 +1,4 @@
-# 3DV-2022 Assignment: Single View to 3D
+# 3DV-2023 Assignment: Single View to 3D
 
 Goals: In this assignment, you will explore the types of loss and decoder functions for regressing to voxels, point clouds, and ~~mesh~~ representation from single view RGB input.
 
@@ -43,13 +43,13 @@ conda env create --file requirements.yml
 
 ### Download dataset
 
-Download dataset from [here](https://drive.google.com/drive/folders/1Me0iJDCQqiF8-I7LTOeasNBs29NzMl1t)
+Download dataset from [here]( https://drive.google.com/file/d/1UsyZT0n4KCCfr7EB-jJFoSZyJgaeVGcc/view?usp=share_link)
 
 Or use **gdown**[^1] to download the google drive files with command line **in your conda env** you just created.
 
 ```bash
 conda activate py3d
-gdown 1o8QZtd7bBdKVo-XDT3iRHatXpSaxtpRB
+gdown 1UsyZT0n4KCCfr7EB-jJFoSZyJgaeVGcc
 ```
 
 After downloaded, put the zip file under `data/` and unzip it.
@@ -102,12 +102,12 @@ Feel free to file an issue if you think this template has a major flaw.
 
 [Issues](https://github.com/nctu-eva-lab/3DV-2022/issues)
 
-## Discussions with others
+<!--## Discussions with others
 
 Feel free to start discussion with your classmates about how you can implement your work better!
 
 [Discussions](https://github.com/nctu-eva-lab/3DV-2022/discussions/categories/general)
-
+-->
 ## Other reference
 
 1. [PyTorch API](https://pytorch.org/docs/stable/index.html)
